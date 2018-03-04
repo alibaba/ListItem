@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/fatian/code/movie/listItem/core/src/main/assets"/><source path="/Users/fatian/code/movie/listItem/core/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/fatian/code/movie/listItem/core/src/debug/assets"/></dataSet></merger>
