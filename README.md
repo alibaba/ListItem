@@ -18,7 +18,120 @@ ListItem是简化列表（ListView、RecyclerView）使用的组件。有了List
 
 
 ## 如何使用
+####我们以一个部门分组的人员列表为例：
+
+1. 使用ItemAdapter
+```java
+recyclerView = (RecyclerView) layoutView.findViewById(R.id.combolist);
+
+LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+
+adapter = new ItemAdapter(getContent());
+
+recyclerView.setLayoutManager(llm);
+recyclerView.setAdapter(adapter);
 
 
+```
+
+2. 构建Item
+``` java
+/**
+ *   展示一个文案的简单item，通过范性指定item的ViewHolder和数据（String）
+ */
+public class TitleItem extends RecyclerExtDataItem<TitleItem.ViewHolder, String> {
 
 
+    public TitleItem(String data) {
+        super(data, null);
+    }
+
+    /**
+     * onBindViewHolder 里实现ViewHolder和数据（String）的绑定过程，也是传统RecyclerView
+     * 的复用过程
+     */
+    @Override
+    public void onBindViewHolder(final ViewHolder viewHolder) {
+        viewHolder.title.setText(data);
+    }
+
+    /**
+     * 指定布局文件，也可以通过View getLayoutView(ViewGroup parent)指定视觉布局。
+     */
+    @Override
+    public int getLayoutId() {
+        return R.layout.title_item;
+    }
+
+    /**
+     * 当前item的ViewHolder。推荐写成类似这样的内部类。代码内聚度更高。
+     */
+    public static class ViewHolder extends CustomRecyclerViewHolder {
+        TextView title;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.title);
+        }
+    }
+}
+
+public class PeopleItem extends RecyclerExtDataItem<TitleItem.ViewHolder, People> {
+    public TitleItem(People data) {
+        super(data, null);
+    }
+
+    /**
+     * onBindViewHolder 里实现ViewHolder和数据（String）的绑定过程，也是传统RecyclerView
+     * 的复用过程
+     */
+    @Override
+    public void onBindViewHolder(final ViewHolder viewHolder) {
+        viewHolder.name.setText(data.name);
+        viewHolder.age.setText(data.age);
+        viewHolder.address.setText(data.address);
+
+    }
+    @Override
+    public int getLayoutId() {
+        return R.layout.people_item;
+    }
+
+    /**
+     * 当前item的ViewHolder。推荐写成类似这样的内部类。代码内聚度更高。
+     */
+    public static class ViewHolder extends CustomRecyclerViewHolder {
+        TextView name;
+        TextView age;
+        TextView address;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.name);
+
+            age = (TextView) itemView.findViewById(R.id.age);
+
+            address = (TextView) itemView.findViewById(R.id.address);
+        }
+    }
+}
+
+```
+
+3. 添加Item
+
+```
+//添加部门1的人员
+List<People> depart1 = ....
+adapter.addItem(new TitleItem("部门1"),true);
+for(People people : depart1){
+    adapter.addItem(new PeopleItem(people),true);
+}
+
+//添加部门2的人员
+List<People> depart2 = ....
+adapter.addItem(new TitleItem("部门2"),true);
+for(People people : depart2){
+    adapter.addItem(new PeopleItem(people),true);
+}
+
+```
