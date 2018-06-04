@@ -9,4 +9,4 @@
 .externalNativeBuild
 /.idea/*
 */build/*
-/core/build/*
+app/app.iml
